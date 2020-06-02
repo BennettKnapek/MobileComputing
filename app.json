@@ -1,17 +1,28 @@
 {
-  "name": "musicMatcher",
-  "displayName": "musicMatcher",
   "expo": {
-    "name": "musicMatcher",
-    "slug": "musicMatcher",
-    "version": "1.0.0",
+    "name": "MobileComputing",
+    "slug": "MobileComputing",
     "platforms": [
-      "ios",
       "android",
       "web"
     ],
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "icon": "./assets/images/icon.png",
+    "scheme": "myapp",
+    "splash": {
+      "image": "./assets/images/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "updates": {
+      "fallbackToCacheTimeout": 0
+    },
     "assetBundlePatterns": [
       "**/*"
-    ]
+    ],
+    "web": {
+      "favicon": "./assets/images/favicon.png"
+    }
   }
 }
