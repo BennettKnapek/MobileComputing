@@ -1,46 +1,37 @@
-import { Ionicons } from '@expo/vector-icons';
 import * as WebBrowser from 'expo-web-browser';
 import * as React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import { RectButton, ScrollView } from 'react-native-gesture-handler';
+import { StyleSheet, Text, View, TextInput} from 'react-native';
+import { ScrollView } from 'react-native-gesture-handler';
+
+import Crnt_Settings from '../classes/Settings';
 
 export default function SettingsScreen() {
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
-      <OptionButton
-        icon="md-school"
-        label="Read the Expo documentation"
-        onPress={() => WebBrowser.openBrowserAsync('https://docs.expo.io')}
-      />
-
-      <OptionButton
-        icon="md-compass"
-        label="Read the React Navigation documentation"
-        onPress={() => WebBrowser.openBrowserAsync('https://reactnavigation.org')}
-      />
-
-      <OptionButton
-        icon="ios-chatboxes"
-        label="Ask a question on the forums"
-        onPress={() => WebBrowser.openBrowserAsync('https://forums.expo.io')}
+      <OptionInputNumeric
+        label="Target Heartrate (BPM)"
+        value={Crnt_Settings.target_bpm.toString()}
+        onChangeText={text => Crnt_Settings.target_bpm = parseInt(text)}
         isLastOption
       />
     </ScrollView>
   );
 }
 
-function OptionButton({ icon, label, onPress, isLastOption }) {
+function OptionInputNumeric({ label, isLastOption, onChangeText, value}) {
   return (
-    <RectButton style={[styles.option, isLastOption && styles.lastOption]} onPress={onPress}>
+    <View style={[styles.option, isLastOption && styles.lastOption]}>
       <View style={{ flexDirection: 'row' }}>
-        <View style={styles.optionIconContainer}>
-          <Ionicons name={icon} size={22} color="rgba(0,0,0,0.35)" />
-        </View>
-        <View style={styles.optionTextContainer}>
+        <View style={{flex:1}}>
           <Text style={styles.optionText}>{label}</Text>
         </View>
+        <TextInput style={styles.optionInput}
+          defaultValue={value}
+          onChangeText = {onChangeText}
+          keyboardType="numeric"
+        />
       </View>
-    </RectButton>
+    </View>
   );
 }
 
@@ -52,9 +43,6 @@ const styles = StyleSheet.create({
   contentContainer: {
     paddingTop: 15,
   },
-  optionIconContainer: {
-    marginRight: 12,
-  },
   option: {
     backgroundColor: '#fdfdfd',
     paddingHorizontal: 15,
@@ -63,12 +51,18 @@ const styles = StyleSheet.create({
     borderBottomWidth: 0,
     borderColor: '#ededed',
   },
+  optionInput: {
+    flex: 1,
+    padding:3,
+    borderColor: 'black',
+    borderWidth: 1
+  },
   lastOption: {
     borderBottomWidth: StyleSheet.hairlineWidth,
   },
   optionText: {
     fontSize: 15,
     alignSelf: 'flex-start',
-    marginTop: 1,
+    marginTop: 5
   },
 });
