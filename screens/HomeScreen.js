@@ -3,10 +3,13 @@ import * as React from 'react';
 import { Image, Platform, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 import { MonoText } from '../components/StyledText';
+import { BaseRouter } from '@react-navigation/native';
 
-import Crnt_Settings from '../classes/Settings';
+import Settings from '../classes/Settings';
 
 var bpm = 80;
+
+var test = false;
 
 function update_bpm () {
   if (Math.random() * 10 < 5) {
@@ -23,7 +26,7 @@ const CurrentBPM = () => {
 
   React.useEffect(() => {
     const interval = setInterval(() => {
-      setLbpm(lbpm => update_bpm());
+      setLbpm(update_bpm());
     }, 500);
     return () => clearInterval(interval);
   });
@@ -33,20 +36,34 @@ const CurrentBPM = () => {
         {lbpm} BPM
       </Text>
   );
-}
+};
 
-export default function HomeScreen() {
+const CurrentTarget = () => {
+  const { targetBPM } = React.useContext(Settings)
+
+  //React.useEffect( () => {    
+  //  console.log(AuthSession.getRedirectUrl())
+  //})
+
+  return (
+    <Text style={styles.lessEmph}>
+      Current Target: {targetBPM}
+    </Text> 
+  );
+};
+
+const HomeScreen = ({ navigation, route }) => {
   return (
     <View style={styles.container}>
       <View style={{marginTop: 100, alignItems: 'center'}}>
         <CurrentBPM/>
-        <Text style={styles.lessEmph}>
-          Current Target: {Crnt_Settings.target_bpm}
-        </Text>
+        <CurrentTarget/>
       </View>
     </View>
   );
-}
+};
+
+export default HomeScreen;
 
 // Removes header from screen
 HomeScreen.navigationOptions = {

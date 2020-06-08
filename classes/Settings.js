@@ -1,10 +1,5 @@
-// Contains all settings that can be set in the app
-class Settings {
-    constructor (bpm) {
-        this.target_bpm = bpm;
-    }
-}
+import * as React from 'react';
 
-const Crnt_Settings = new Settings(100);
+const Settings = React.createContext(null);
 
-export default Crnt_Settings
+export default Settings

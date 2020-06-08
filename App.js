@@ -7,22 +7,47 @@ import useCachedResources from './hooks/useCachedResources';
 import BottomTabNavigator from './navigation/BottomTabNavigator';
 import LinkingConfiguration from './navigation/LinkingConfiguration';
 
+import Settings from './classes/Settings';
+import * as SpotifyToken from './classes/Spotify';
+
+import { DatePicker } from 'native-base';
+
+import * as AuthSession from 'expo-auth-session';
+
 const Stack = createStackNavigator();
 
 export default function App(props) {
   const isLoadingComplete = useCachedResources();
 
+  const [targetBPM, setTargetBPM] = React.useState(100);
+
+  const [access, setAccess] = React.useState(false);
+
+  const value = { targetBPM, setTargetBPM, access, setAccess }
+
+//  React.useEffect(() => {
+//    const tokenTime = SpotifyToken.ExpirationTime;
+//    if (!tokenTime || new Date().getTime() > tokenTime) {
+//      SpotifyToken.refreshTokens();
+//    }
+//    else {
+//      setAccess(true);
+//    }
+//  });
+
   if (!isLoadingComplete) {
     return null;
   } else {
     return (
-      <View style={styles.container}>
-        <NavigationContainer linking={LinkingConfiguration}>
-          <Stack.Navigator>
-            <Stack.Screen name="Root" component={BottomTabNavigator} />
-          </Stack.Navigator>
-        </NavigationContainer>
-      </View>
+      <Settings.Provider value = {value}>
+        <View style={styles.container}>
+          <NavigationContainer linking={LinkingConfiguration}>
+            <Stack.Navigator>
+              <Stack.Screen name="Root" component={BottomTabNavigator} />
+            </Stack.Navigator>
+          </NavigationContainer>
+        </View>
+      </Settings.Provider>
     );
   }
 }

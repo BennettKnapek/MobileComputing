@@ -26,7 +26,6 @@ export default function BottomTabNavigator({ navigation, route }) {
         options={{
           title: 'Home',
           tabBarIcon: ({ focused }) => <TabBarIconColor focused={focused} name="md-heart" color="#b30000"/>,
-          unmountOnBlur: true
         }}
       />
       <BottomTab.Screen

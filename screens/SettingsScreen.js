@@ -1,22 +1,63 @@
 import * as WebBrowser from 'expo-web-browser';
 import * as React from 'react';
+import { Ionicons } from '@expo/vector-icons';
 import { StyleSheet, Text, View, TextInput} from 'react-native';
-import { ScrollView } from 'react-native-gesture-handler';
+import { RectButton, ScrollView } from 'react-native-gesture-handler';
 
-import Crnt_Settings from '../classes/Settings';
+import Settings from '../classes/Settings';
+import * as Spotify from '../classes/Spotify';
 
-export default function SettingsScreen() {
+var isSpotifyConnected = false;
+
+const getIcon = (access) => {
+  if (isSpotifyConnected) {
+    return "md-checkmark"
+  }
+  else {
+    return "md-log-in"
+  }
+}
+
+const keepSpotifyConnected = () => {
+  const { access } = React.useContext(Settings);
+
+  React.useEffect(() => {
+    if (access) {
+      const timeout = setTimeout(() => {
+        Spotify.refreshTokens();
+      }, 300000);
+      return () => clearTimeout(timeout);
+    }
+  });
+
+  return (
+    <Component>
+    </Component>
+  );
+}
+
+const SettingsScreen = ({ navigation, route }) => {
+  const { targetBPM, setTargetBPM, setAccess } = React.useContext(Settings);
+
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
       <OptionInputNumeric
         label="Target Heartrate (BPM)"
-        value={Crnt_Settings.target_bpm.toString()}
-        onChangeText={text => Crnt_Settings.target_bpm = parseInt(text)}
-        isLastOption
+        value={targetBPM.toString()}
+        onChangeText={text => setTargetBPM(parseInt(text))}
       />
+      <OptionButton
+        label="Connect Spotify"
+        icon={getIcon()}
+        onPress={() => {setAccess(true); if(!isSpotifyConnected) {(async () => {await Spotify.refreshTokens()})(); isSpotifyConnected = true}}}
+        isLastOption>
+        <keepSpotifyConnected/>
+      </OptionButton>
     </ScrollView>
   );
 }
+
+export default SettingsScreen;
 
 function OptionInputNumeric({ label, isLastOption, onChangeText, value}) {
   return (
@@ -28,10 +69,25 @@ function OptionInputNumeric({ label, isLastOption, onChangeText, value}) {
         <TextInput style={styles.optionInput}
           defaultValue={value}
           onChangeText = {onChangeText}
-          keyboardType="numeric"
-        />
+          keyboardType="numeric"/>
       </View>
     </View>
+  );
+}
+
+
+function OptionButton({ icon, label, onPress, isLastOption }) {
+  return (
+    <RectButton style={[styles.option, isLastOption && styles.lastOption]} onPress={onPress}>
+      <View style={{ flexDirection: 'row' }}>
+        <View style={styles.optionIconContainer, {marginTop: 5, marginRight: 5}}>
+          <Ionicons name={icon} size={22} color="rgba(0,0,0,0.35)" />
+        </View>
+        <View style={styles.optionTextContainer}>
+          <Text style={styles.optionText}>{label}</Text>
+        </View>
+      </View>
+    </RectButton>
   );
 }
 
@@ -57,6 +113,10 @@ const styles = StyleSheet.create({
     borderColor: 'black',
     borderWidth: 1
   },
+  optionIconContainer: {
+    marginRight: 12,
+  },
+
   lastOption: {
     borderBottomWidth: StyleSheet.hairlineWidth,
   },
