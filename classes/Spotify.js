@@ -126,16 +126,21 @@ export const refreshIfNeeded = async (updateFlag) => {
   } catch {}
 }
 
-export const getUserPlaylists = () => {
-  spotifyApi.getArtistAlbums(
-    '43ZHCT0cAZBISjO8DG9PnE',
-    { limit: 10, offset: 20 },
-    function(err, data) {
-      if (err) {
-        console.error(err);
-      } else {
-        console.log(data.body);
-      }
-    }
-  );
+const getUser = () => {
+  spotifyApi.getMe()
+  .then(function(data) {
+    return data.body.display_name;
+  }, function(err) {
+    console.log('Something went wrong!', err);
+  });
+}
+
+export const getUserPlaylists = (setPlaylists) => {
+  const user = getUser();
+  spotifyApi.getUserPlaylists(user)
+  .then(function(data) {
+    setPlaylists(data.body.items);
+  },function(err) {
+    console.log('Something went wrong!', err);
+  });
 };

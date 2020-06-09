@@ -1,7 +1,7 @@
 import * as WebBrowser from 'expo-web-browser';
 import * as React from 'react';
 import { Ionicons } from '@expo/vector-icons';
-import { StyleSheet, Text, View, TextInput, AsyncStorage} from 'react-native';
+import { StyleSheet, Text, View, TextInput, Picker} from 'react-native';
 import { RectButton, ScrollView } from 'react-native-gesture-handler';
 
 import Settings from '../classes/Settings';
@@ -32,12 +32,7 @@ const SettingsScreen = ({ navigation, route }) => {
         onPress={() => {
           Spotify.refreshIfNeeded(setAccess);
         }}/>
-        <OptionButton
-        label="Check if works"
-        icon={'md-book'}
-        onPress={() => {
-          Spotify.getUserPlaylists();
-        }}
+      <PlaylistSelect
         isLastOption/>
     </ScrollView>
   );
@@ -76,9 +71,31 @@ function OptionButton({ icon, label, onPress, isLastOption }) {
   );
 }
 
-function PlaylistSelect() {
+function PlaylistSelect({ icon, label, onPress, isLastOption }) {
+  const { access } = React.useContext(Settings);
+  const [playlists, setPlaylists] = React.useState([]);
+  const [item, setItem] = React.useState();
+
+  React.useEffect(() => {
+    if (access && playlists.length === 0) {
+      Spotify.getUserPlaylists(setPlaylists)
+    }
+  })
+
   return (
-    null
+    <View style={[styles.option, isLastOption && styles.lastOption]}>
+      <Picker 
+        style={{height:50, width:100}}
+        onValueChange={(item) => setItem(item.value)}>
+          {
+            playlists.map(playlist => {
+              return (
+                <Picker.Item key={playlist.id} label={playlist.name} value={playlist.id}/>
+              )
+            })
+          }
+      </Picker>
+    </View>
   );
 }
 
