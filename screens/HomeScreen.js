@@ -41,10 +41,6 @@ const CurrentBPM = () => {
 const CurrentTarget = () => {
   const { targetBPM } = React.useContext(Settings)
 
-  //React.useEffect( () => {    
-  //  console.log(AuthSession.getRedirectUrl())
-  //})
-
   return (
     <Text style={styles.lessEmph}>
       Current Target: {targetBPM}

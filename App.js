@@ -25,16 +25,6 @@ export default function App(props) {
 
   const value = { targetBPM, setTargetBPM, access, setAccess }
 
-//  React.useEffect(() => {
-//    const tokenTime = SpotifyToken.ExpirationTime;
-//    if (!tokenTime || new Date().getTime() > tokenTime) {
-//      SpotifyToken.refreshTokens();
-//    }
-//    else {
-//      setAccess(true);
-//    }
-//  });
-
   if (!isLoadingComplete) {
     return null;
   } else {

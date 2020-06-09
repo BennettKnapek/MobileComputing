@@ -14,6 +14,7 @@
   "dependencies": {
     "@expo/vector-icons": "~10.0.6",
     "@react-native-community/masked-view": "0.1.6",
+    "@react-native-community/picker": "^1.6.1",
     "@react-navigation/bottom-tabs": "^5.3.1",
     "@react-navigation/native": "^5.2.1",
     "@react-navigation/stack": "^5.2.16",
@@ -36,7 +37,8 @@
     "react-native-screens": "~2.2.0",
     "react-native-web": "~0.11.7",
     "rn-spotify-sdk": "^1.2.13",
-    "spotify-web-api-js": "^1.4.0"
+    "spotify-web-api-js": "^1.4.0",
+    "spotify-web-api-node": "^4.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.8.6",
