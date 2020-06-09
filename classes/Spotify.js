@@ -3,7 +3,7 @@ import { encode as btoa } from 'base-64';
 import SpotifyWebAPI from 'spotify-web-api-node';
 import { AsyncStorage } from 'react-native';
 
-var spotifyApi = new SpotifyWebAPI()
+const spotifyApi = new SpotifyWebAPI()
 
 export const spotifyCredentials = {
     clientId: '25afcf7c6bff4a51be62b2ae1a0dd298',
@@ -73,6 +73,7 @@ const getTokens = async () => {
 
 // Also: https://medium.com/@zachrach/spotify-web-api-authorization-with-react-native-expo-6ee1a290b2b0
 const refreshTokens = async () => {
+    console.log("refreshingtokens")
     try {
       const credentials = spotifyCredentials
       const credsB64 = btoa(`${credentials.clientId}:${credentials.clientSecret}`);
@@ -119,7 +120,6 @@ export const refreshIfNeeded = async (updateFlag) => {
     await refreshTokens(); 
   }
   const access_token = await AsyncStorage.getItem('AccessToken');
-  console.log(access_token);
   spotifyApi.setAccessToken(access_token);
   try {
     updateFlag(true);
@@ -131,6 +131,15 @@ const getUser = () => {
   .then(function(data) {
     return data.body.display_name;
   }, function(err) {
+    console.log('Something went wrong!', err);
+  });
+}
+
+export const playMusic = () => {
+  spotifyApi.play()
+  .then(function(data) {
+    console.log('Playing music');
+  },function(err) {
     console.log('Something went wrong!', err);
   });
 }

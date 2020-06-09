@@ -23,7 +23,9 @@ export default function App(props) {
 
   const [access, setAccess] = React.useState(false);
 
-  const value = { targetBPM, setTargetBPM, access, setAccess }
+  const [playlist, setPlaylist] = React.useState(null);
+
+  const value = { targetBPM, setTargetBPM, access, setAccess, playlist, setPlaylist }
 
   if (!isLoadingComplete) {
     return null;

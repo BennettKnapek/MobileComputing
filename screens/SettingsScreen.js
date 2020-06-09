@@ -71,10 +71,10 @@ function OptionButton({ icon, label, onPress, isLastOption }) {
   );
 }
 
-function PlaylistSelect({ icon, label, onPress, isLastOption }) {
-  const { access } = React.useContext(Settings);
+function PlaylistSelect({ isLastOption }) {
+  const { access, setPlaylist} = React.useContext(Settings);
   const [playlists, setPlaylists] = React.useState([]);
-  const [item, setItem] = React.useState();
+  const [selected, setSelected] = React.useState(0);
 
   React.useEffect(() => {
     if (access && playlists.length === 0) {
@@ -86,12 +86,13 @@ function PlaylistSelect({ icon, label, onPress, isLastOption }) {
     <View style={[styles.option, isLastOption && styles.lastOption]}>
       <Picker 
         style={{height:50, width:100}}
-        onValueChange={(item) => setItem(item.value)}>
+        selectedValue={selected}
+        onValueChange={(item) => {setSelected(item.key); setPlaylist(item.id)}}>
           {
-            playlists.map(playlist => {
+            playlists.map((playlist, index) => {
               return (
-                <Picker.Item key={playlist.id} label={playlist.name} value={playlist.id}/>
-              )
+                <Picker.Item key={index} label={playlist.name} value={playlist.id}/>
+              );
             })
           }
       </Picker>

@@ -1,11 +1,14 @@
 import * as WebBrowser from 'expo-web-browser';
 import * as React from 'react';
 import { Image, Platform, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
+import { RectButton } from 'react-native-gesture-handler';
 
 import { MonoText } from '../components/StyledText';
 import { BaseRouter } from '@react-navigation/native';
 
 import Settings from '../classes/Settings';
+import * as Spotify from '../classes/Spotify';
 
 var bpm = 80;
 
@@ -48,12 +51,34 @@ const CurrentTarget = () => {
   );
 };
 
+const PlayButton = () => {
+  const [icon, setIcon] = React.useState('md-play');
+  return (
+    <RectButton style={{marginTop:200, width:70, height:70}}
+      onPress = {() => {
+        if (icon === 'md-play') {
+          setIcon('md-pause')
+        }
+        else {
+          setIcon('md-play')
+        }
+        Spotify.playMusic();
+      }}
+    >
+      <View style={{marginLeft: 15}}>
+        <Ionicons name={icon} size={70} color="rgba(0,0,0,1)" />
+      </View>
+    </RectButton>
+  )
+}
+
 const HomeScreen = ({ navigation, route }) => {
   return (
     <View style={styles.container}>
       <View style={{marginTop: 100, alignItems: 'center'}}>
         <CurrentBPM/>
         <CurrentTarget/>
+        <PlayButton/>
       </View>
     </View>
   );
