@@ -109,14 +109,9 @@ const refreshTokens = async () => {
 
 export const refreshIfNeeded = async (updateFlag) => {
   const expiration_time_string = await AsyncStorage.getItem('ExpirationTime');
-  var expiration_time;
-  try {
-    expiration_time = parseInt(expiration_time_string);
-  }
-  catch {
-    expiration_time = null;
-  }
-  if((expiration_time === null) || new Date().getTime() > expiration_time){
+  var expiration_time = parseInt(expiration_time_string);
+  if(isNaN(expiration_time) || new Date().getTime() > expiration_time){
+    console.log("Refreshing the tokens");
     await refreshTokens(); 
   }
   const access_token = await AsyncStorage.getItem('AccessToken');
