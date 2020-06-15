@@ -131,7 +131,7 @@ const getUser = () => {
   .then(function(data) {
     return data.body.display_name;
   }, function(err) {
-    console.log('Something went wrong!', err);
+    console.log('getUser Error:', err);
   });
 }
 
@@ -140,7 +140,7 @@ export const playMusic = (device) => {
   .then(function(data) {
     console.log('Playing music');
   },function(err) {
-    console.log('Something went wrong!', err);
+    console.log('playMusic Error:', err);
   });
 }
 
@@ -149,7 +149,7 @@ export const pauseMusic = (device) => {
   .then(function(data) {
     console.log('Pausing music');
   },function(err) {
-    console.log('Something went wrong!', err);
+    console.log('pauseMusic Error:', err);
   });
 }
 
@@ -159,7 +159,7 @@ export const getUserPlaylists = (setPlaylists) => {
   .then(function(data) {
     setPlaylists(data.body.items);
   },function(err) {
-    console.log('Something went wrong!', err);
+    console.log('getUserPlaylists Error:', err);
   });
 };
 
@@ -169,6 +169,6 @@ export const getDevices = (setDevices) => {
   .then(function(data) {
     setDevices(data.body.devices);
   },function(err) {
-    console.log('Something went wrong!', err);
+    console.log('getDevices Error:', err);
   });
 };
