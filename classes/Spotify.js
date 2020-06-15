@@ -135,10 +135,19 @@ const getUser = () => {
   });
 }
 
-export const playMusic = () => {
-  spotifyApi.play()
+export const playMusic = (device) => {
+  spotifyApi.play({device_id: device})
   .then(function(data) {
     console.log('Playing music');
+  },function(err) {
+    console.log('Something went wrong!', err);
+  });
+}
+
+export const pauseMusic = (device) => {
+  spotifyApi.pause({device_id: device})
+  .then(function(data) {
+    console.log('Pausing music');
   },function(err) {
     console.log('Something went wrong!', err);
   });
@@ -149,6 +158,16 @@ export const getUserPlaylists = (setPlaylists) => {
   spotifyApi.getUserPlaylists(user)
   .then(function(data) {
     setPlaylists(data.body.items);
+  },function(err) {
+    console.log('Something went wrong!', err);
+  });
+};
+
+export const getDevices = (setDevices) => {
+  const user = getUser();
+  spotifyApi.getMyDevices()
+  .then(function(data) {
+    setDevices(data.body.devices);
   },function(err) {
     console.log('Something went wrong!', err);
   });

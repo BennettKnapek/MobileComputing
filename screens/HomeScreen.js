@@ -52,17 +52,22 @@ const CurrentTarget = () => {
 };
 
 const PlayButton = () => {
+  const {device} = React.useContext(Settings)
   const [icon, setIcon] = React.useState('md-play');
   return (
     <RectButton style={{marginTop:200, width:70, height:70}}
       onPress = {() => {
-        if (icon === 'md-play') {
-          setIcon('md-pause')
+        if (!(device === null)) {
+          console.log(device);
+          if (icon === 'md-play') {
+            setIcon('md-pause')
+            Spotify.playMusic(device);
+          }
+          else {
+            setIcon('md-play')
+            Spotify.pauseMusic(device);
+          }
         }
-        else {
-          setIcon('md-play')
-        }
-        Spotify.playMusic();
       }}
     >
       <View style={{marginLeft: 15}}>

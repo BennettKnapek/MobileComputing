@@ -32,8 +32,9 @@ const SettingsScreen = ({ navigation, route }) => {
         onPress={() => {
           Spotify.refreshIfNeeded(setAccess);
         }}/>
-      <PlaylistSelect
-        isLastOption/>
+      <PlaylistSelect/>
+      <DeviceSelect
+      isLastOption/>
     </ScrollView>
   );
 }
@@ -85,13 +86,43 @@ function PlaylistSelect({ isLastOption }) {
   return (
     <View style={[styles.option, isLastOption && styles.lastOption]}>
       <Picker 
-        style={{height:50, width:100}}
+        style={{height:50, width:300}}
         selectedValue={selected}
-        onValueChange={(item) => {setSelected(item.key); setPlaylist(item.id)}}>
+        onValueChange={(itemValue, itemPosition) => {setPlaylist(itemValue); setSelected(itemValue)}}>
           {
             playlists.map((playlist, index) => {
               return (
                 <Picker.Item key={index} label={playlist.name} value={playlist.id}/>
+              );
+            })
+          }
+      </Picker>
+    </View>
+  );
+}
+
+
+function DeviceSelect({ isLastOption }) {
+  const { access, setDevice } = React.useContext(Settings);
+  const [devices, setDevices] = React.useState([]);
+  const [selected, setSelected] = React.useState(0);
+
+  React.useEffect(() => {
+    if (access && devices.length === 0) {
+      Spotify.getDevices(setDevices)
+    }
+  })
+
+  return (
+    <View style={[styles.option, isLastOption && styles.lastOption]}>
+      <Picker 
+        style={{height:50, width:300}}
+        selectedValue={selected}
+        onValueChange={(itemValue, itemPosition) => {setDevice(itemValue); setSelected(itemValue)}}>
+          {     
+            devices.map((device, index) => {
+              return (
+                <Picker.Item key={index} label={device.name} value={device.id}/>
               );
             })
           }

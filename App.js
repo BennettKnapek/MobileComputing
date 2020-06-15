@@ -25,7 +25,9 @@ export default function App(props) {
 
   const [playlist, setPlaylist] = React.useState(null);
 
-  const value = { targetBPM, setTargetBPM, access, setAccess, playlist, setPlaylist }
+  const [device, setDevice] = React.useState(null);
+
+  const value = { targetBPM, setTargetBPM, access, setAccess, playlist, setPlaylist, device, setDevice }
 
   if (!isLoadingComplete) {
     return null;
